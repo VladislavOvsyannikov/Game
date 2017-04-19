@@ -43,8 +43,9 @@ public class GameField {
     }
 
     private static boolean isWinRow(String[][] field, int k){
-        int w = 1;
+        int w;
         for (int i = 0; i < field.length; i++){
+            w = 1;
             for (int j = 0; j < field[0].length-1; j++) {
                 if (Objects.equals(field[i][j], field[i][j + 1])&&field[i][j]!=null) {
                     w+=1;
@@ -58,8 +59,9 @@ public class GameField {
     }
 
     private static boolean isWinColumn(String[][] field, int k){
-        int w = 1;
+        int w;
         for (int i = 0; i < field[0].length; i++){
+            w = 1;
             for (int j = 0; j < field.length-1; j++) {
                 if (Objects.equals(field[j][i], field[j+1][i])&&field[j][i]!=null) {
                     w+=1;
@@ -125,8 +127,7 @@ public class GameField {
     private static boolean isFullField(String[][] field) {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[0].length; j++) {
-                if (field[i][j] == null)
-                    return false;
+                if (field[i][j] == null) return false;
             }
         }
         return true;

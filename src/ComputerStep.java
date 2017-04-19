@@ -12,28 +12,50 @@ public class ComputerStep {
     }
 
     public void computerStep(String[][] field, int depth, int player){
-        int a = -1;
-        int b = -1;
-        int maxScore = Integer.MIN_VALUE;
-        String[][] moves = new String[n][m];
-        nearCell(field,moves);
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (moves[i][j] != null) {
-                    int score = MAX(field, depth, player, i, j);
-                    System.out.println(score);
-                    if (score > maxScore) {
-                        maxScore = score;
-                        a = i;
-                        b = j;
+        if (maxDepth==0){
+            int a = -1;
+            int b = -1;
+            int maxScore = Integer.MIN_VALUE;
+            String[][] moves = new String[n][m];
+            nearCell(field, moves);
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    if (moves[i][j] != null) {
+                        int score = value(i, j, field, player);
+                        if (score > maxScore) {
+                            maxScore = score;
+                            a = i;
+                            b = j;
+                        }
                     }
                 }
             }
+            field[a][b] = "O";
+        }else {
+            int a = -1;
+            int b = -1;
+            int maxScore = Integer.MIN_VALUE;
+            String[][] moves = new String[n][m];
+            nearCell(field, moves);
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    if (moves[i][j] != null) {
+                        field[i][j] = "O";
+                        int score = -MAXMIN(field, depth, -player, i, j);
+                        field[i][j] = null;
+                        if (score > maxScore) {
+                            maxScore = score;
+                            a = i;
+                            b = j;
+                        }
+                    }
+                }
+            }
+            field[a][b] = "O";
         }
-        field[a][b]="O";
     }
 
-    public int MAX(String[][] field, int depth, int player, int I, int J){
+    public int MAXMIN(String[][] field, int depth, int player, int I, int J){
         if (GameField.isEnd(field)||depth == maxDepth) {
             return value(I, J, field, player);
         }
@@ -44,7 +66,7 @@ public class ComputerStep {
             for (int j = 0; j < m; j++) {
                 if (movesMax[i][j] != null) {
                     if (player==1) field[i][j] = "O"; else field[i][j] = "X";
-                    int s = MIN(field, depth+1 ,-player, i, j);
+                    int s = MAXMIN(field, depth+1 ,-player, i, j);
                     if (s > score) score = s;
                     field[i][j] = null;
                 }
@@ -53,77 +75,25 @@ public class ComputerStep {
         return score;
     }
 
-    public int MIN(String[][] field, int depth, int player, int I, int J){
-        if (GameField.isEnd(field)||depth == maxDepth) {
-            return -value(I, J, field, player);
-        }
-        int score = Integer.MAX_VALUE;
-        String[][] movesMin = new String[n][m];
-        nearCell(field,movesMin);
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (movesMin[i][j] != null) {
-                    if (player==1) field[i][j] = "O"; else field[i][j] = "X";
-                    int s = MAX(field, depth+1 , -player, i, j);
-                    if (s < score) score = s;
-                    field[i][j] = null;
-                }
-            }
-        }
-        return score;
-    }
-
     private int value(int i, int j, String[][] field, int player){
-        if(player == 1) {
-            int value = 0;
-
-            p = 1;
-            q = 0;
-            checkHorizon(i, j, field);
-            value = value + G(p) + Q(q);
-
-            p = 1;
-            q = 0;
-            checkVertical(i, j, field);
-            value = value + G(p) + Q(q);
-
-            p = 1;
-            q = 0;
-            checkDiag1(i, j, field);
-            value = value + G(p) + Q(q);
-
-            p = 1;
-            q = 0;
-            checkDiag2(i, j, field);
-            value = value + G(p) + Q(q);
-
-            return value;
-
-        } else {
-            int value = 0;
-
-            p = 0;
-            q = 1;
-            checkHorizon(i, j, field);
-            value = value + G(p) + Q(q);
-
-            p = 0;
-            q = 1;
-            checkVertical(i, j, field);
-            value = value + G(p) + Q(q);
-
-            p = 0;
-            q = 1;
-            checkDiag1(i, j, field);
-            value = value + G(p) + Q(q);
-
-            p = 0;
-            q = 1;
-            checkDiag2(i, j, field);
-            value = value + G(p) + Q(q);
-
-            return -value;
-        }
+        int value = 0;
+        p = 0;                     // O
+        q = 0;                     // X
+        checkHorizon(i, j, field);
+        value = value + G(p) + Q(q);
+        p = 0;
+        q = 0;
+        checkVertical(i, j, field);
+        value = value + G(p) + Q(q);
+        p = 0;
+        q = 0;
+        checkDiag1(i, j, field);
+        value = value + G(p) + Q(q);
+        p = 0;
+        q = 0;
+        checkDiag2(i, j, field);
+        value = value + G(p) + Q(q);
+        return value;
     }
 
     private void checkDiag1(int i, int j, String[][] field){

@@ -3,7 +3,7 @@ public class Game {
 
         int n = 10; int m = 10;
         int k = 5;
-        int depth = 2;
+        int depth = 4;
         boolean isComputerFirst = false;
 
         GameField game = new GameField(n,m,k,depth);

@@ -78,19 +78,19 @@ public class ComputerStep {
     private int value(int i, int j, String[][] field, int player){
         int value = 0;
         p = 0;                     // O
-        q = 0;                     // X
+        q = 1;                     // X
         checkHorizon(i, j, field);
         value = value + G(p) + Q(q);
         p = 0;
-        q = 0;
+        q = 1;
         checkVertical(i, j, field);
         value = value + G(p) + Q(q);
         p = 0;
-        q = 0;
+        q = 1;
         checkDiag1(i, j, field);
         value = value + G(p) + Q(q);
         p = 0;
-        q = 0;
+        q = 1;
         checkDiag2(i, j, field);
         value = value + G(p) + Q(q);
         return value;

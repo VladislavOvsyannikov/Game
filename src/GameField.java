@@ -134,21 +134,22 @@ public class GameField {
     }
 
     private void drawField(String[][] field){
-        System.out.print("    ");
+        System.out.print("     ");
         for (int i = 0; i < field[0].length; i++ ){
             System.out.print(i+" ");
         }
-        System.out.println(" "); System.out.println(" ");
+        System.out.println(" ");
         for (int i = 0; i < field.length; i++) {
-            System.out.print(i+"   ");
+            System.out.print(i+"   |");
             for (int j = 0; j < field[0].length; j++) {
                 if (field[i][j] == null) {
-                    System.out.print(" "+" ");
+                    System.out.print(" |"+"");
                 }else{
-                    System.out.print(field[i][j]+" ");
+                    System.out.print(field[i][j]+"|");
                 }
             }
             System.out.println(" ");
         }
+        System.out.println(" ");
     }
 }

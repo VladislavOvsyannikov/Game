@@ -41,7 +41,7 @@ public class ComputerStep {
                 for (int j = 0; j < m; j++) {
                     if (moves[i][j] != null) {
                         field[i][j] = "O";
-                        int score = -MAXMIN(field, depth, -player, i, j);
+                        int score = MINMAX(field, depth, -player, i, j);
                         field[i][j] = null;
                         if (score > maxScore) {
                             maxScore = score;
@@ -55,19 +55,19 @@ public class ComputerStep {
         }
     }
 
-    public int MAXMIN(String[][] field, int depth, int player, int I, int J){
+    public int MINMAX(String[][] field, int depth, int player, int I, int J){
         if (GameField.isEnd(field)||depth == maxDepth) {
-            return value(I, J, field, player);
+            return -value(I, J, field, player);
         }
-        int score = Integer.MIN_VALUE;
+        int score = Integer.MAX_VALUE;
         String[][] movesMax = new String[n][m];
         nearCell(field,movesMax);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (movesMax[i][j] != null) {
                     if (player==1) field[i][j] = "O"; else field[i][j] = "X";
-                    int s = MAXMIN(field, depth+1 ,-player, i, j);
-                    if (s > score) score = s;
+                    int s = MINMAX(field, depth+1 ,-player, i, j);
+                    if (s < score) score = s;
                     field[i][j] = null;
                 }
             }
